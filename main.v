@@ -55,10 +55,13 @@ fn main() {
 					},
 				]
 				execute: fn (cmd cli.Command) ! {
-					name := cmd.args[0] or { error('specify a name first') }
-					path := cmd.args[1] or { error('specify a path') }
+					name := cmd.args[0] or { error('specify a name first'); return }
+					path := cmd.args[1] or {
+						error('specify a path')
+						return
+					}
 
-					desc := cmd.flags.get_string('description') or { return 'no description' }
+					desc := cmd.flags.get_string('description') or { 'no description' }
 
 					new_file := RegisteredDir{
 						name:          name
